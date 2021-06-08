@@ -1,5 +1,4 @@
 <?php
-
 include 'digitalocean.php';
 
 $sql = "SELECT * FROM incorporacion_simpla WHERE IDincorporacion = '100'";
@@ -11,30 +10,27 @@ if ($res = mysqli_query($conn, $sql)){
 	 $oportunidades = $extraido['total_oportunidades'];
 	 $pantalla = $extraido['pantalla'];
 	 $area = $extraido['area'];
+	 //echo $pantalla. "<br>";
 	 
-	 if ($oportunidades == 0){
-		 $porcentaje = 0;
-	 }
-	 else{
-	 $porcentaje = ($efectivos*100)/$oportunidades;
-	 }
-	 
-	 $jsonarray = array($porcentaje, $oportunidades, $efectivos);
-	 echo json_encode($jsonarray);
-	 
+	 $oportunidades = $oportunidades + 1;
+	 	 
 } else {
       echo "Error: " . $sql . "<br>" . mysqli_error($conn);
 }
 
-//$sql = "REPLACE INTO incorporacion_simpla (IDincorporacion, area, porcentaje, total_efectivos, total_oportunidades, pantalla) VALUES ('100', $area, $porcentaje, $efectivos, $oportunidades, $pantalla)";
-$sql = "UPDATE incorporacion_simpla SET porcentaje = $porcentaje WHERE IDincorporacion = '100'";
+//$sql = "INSERT INTO incorporacion_simpla (IDincorporacion, total_efectivos, total_oportunidades, pantalla) VALUES ('100', $efectivos, $oportunidades, $pantalla)";
+//$sql = "REPLACE INTO incorporacion_simpla (IDincorporacion, total_efectivos, total_oportunidades, pantalla) VALUES ('100', $efectivos, $oportunidades, $pantalla)";
+$sql = "UPDATE incorporacion_simpla SET total_oportunidades = $oportunidades WHERE IDincorporacion = '100'";
+
+
 if ($res = mysqli_query($conn, $sql)){
 
-	 //echo $res;
+	 include 'porc_simpla.php';
 	 
 } else {
       echo "Error: " . $sql . "<br>" . mysqli_error($conn);
 }
-mysqli_close($conn);
+
+
 
 ?>
